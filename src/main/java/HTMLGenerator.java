@@ -51,17 +51,10 @@ public class HTMLGenerator {
             writer.write("</title></head>");
             writer.write("\n");
             writer.write("<body><table>");
+            writer.write("\n");
 
             Iterator<Cell> firstrowcells = row.cellIterator();
-            writer.write("\n");
-            writer.write("<thead><tr>");
-            while(firstrowcells.hasNext()) {
-                Cell cell = firstrowcells.next();
-                writer.write("<th>");
-                writer.write(cell.toString());
-                writer.write("</th>");
-            }
-            writer.write("</tr></thead>");
+            String headerHtml = getHeaderHtml(firstrowcells, writer);
             writer.write("\n");
 
             writer.write("<tbody>");
@@ -86,7 +79,24 @@ public class HTMLGenerator {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    private String getHeaderHtml(Iterator<Cell> firstrowcells, BufferedWriter writer) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        writer.write("<thead><tr>");
+        builder.append("<thead><tr>");
+        while(firstrowcells.hasNext()) {
+            Cell cell = firstrowcells.next();
+            writer.write("<th>");
+            builder.append("<th>");
+            writer.write(cell.toString());
+            builder.append(cell.toString());
+            writer.write("</th>");
+            builder.append("</th>");
+        }
+        writer.write("</tr></thead>");
+        builder.append("</tr></thead>");
+        return builder.toString();
     }
     //test
 }
